@@ -25,11 +25,12 @@ Keine Garantie für Richtigkeit und Aktualität. Inbetriebnahme auf eigene Gefah
 * BMW ConnectedDrive Zugangsdaten
 
 
-### Installation
+### Installation (API)
 
 1. Datei `.htaccess` nach Wünschen anpassen, insbesondere [Zeilen 20-21](https://github.com/sergejmueller/battery.ebiene.de/blob/master/.htaccess#L20-L21).
-2. Datei `token.json` im Ordner `api/` beschreibbar anlegen.
-3. Datei `auth.json` im Ordner `api/` mit BMW ConnectedDrive Zugangsdaten anlegen:
+2. Datei `cache.json` im Ordner `api/` beschreibbar anlegen.
+3. Datei `token.json` im Ordner `api/` beschreibbar anlegen.
+4. Datei `auth.json` im Ordner `api/` mit BMW ConnectedDrive Zugangsdaten anlegen:
 
 ```json
 {
@@ -44,6 +45,50 @@ Keine Garantie für Richtigkeit und Aktualität. Inbetriebnahme auf eigene Gefah
 | `username` | BMW ConnectedDrive Benutzername |
 | `password` | BMW ConnectedDrive Passwort     |
 | `vehicle`  | 17-stellige Fahrgestellnummer   |
+
+
+### Installation (NOTIFY)
+
+Auf Wunsch kann der aktuelle Ladestatus des Fahrzeugs beobachtet und bei Änderungen (Ladevorgang gestartet, Ladevorgang beendet) eine Benachrichtigung gesendet werden. Folgende Voraussetzungen sind zu erwarten:
+
+1. [Cronjob](https://de.wikipedia.org/wiki/Cron) (serverseitig oder extern)
+2. [Webhook(s)](https://de.wikipedia.org/wiki/WebHooks) für Slack und/oder IFTTT
+
+##### Das Prinzip
+Via Cronjob prüft ein Skript auf die Veränderung des Ladezustandes (`chargingSystemStatus`). Bei einer Änderung wird ein Webhook aufgerufen/kontaktiert. Der aufgerufene Webhook (Slack und/oder IFTTT) stößt eine Benachrichtigung auf der entsprechenden (Smartphone/Desktop) App aus.
+
+##### Cronjob
+
+Ziel-URL für den Cronjob: `https://battery.ebiene.de/notify`
+
+##### Webhooks
+
+1. Datei `webhooks.json` im Ordner `notify/` mit angepassten Webhook-URLs anlegen:
+```json
+{
+    "ifttt": "https://maker.ifttt.com/trigger/EVENT/with/key/KEY",
+    "slack": "https://hooks.slack.com/services/XXX/YYY/ZZZ"
+}
+```
+
+##### IFTTT
+
+Webhook-URL baut sich wie folgt zusammen: `https://maker.ifttt.com/trigger/EVENT/with/key/KEY`
+
+Der Wert `EVENT` kommt aus dem Punkt `3`, der `KEY` aus `8` (siehe nachfolgende Einrichtung).
+
+1. https://ifttt.com/my_applets → `New Applet`
+2. `if this` → `Webhooks` → `Receive a web request`
+3. `Event Name` → z.B. `i3_charging` → `Create trigger`
+4. `then that` → `Notifications` → `Send a notification from the IFTTT app`
+5. `Message` → `{{Value1}}` → `Create action`
+6. Review and finish
+7. Den Schalter auf `On` stellen, falls nicht geschehen
+8. https://ifttt.com/maker_webhooks → `Documentation` → `Your key is`
+
+##### Slack
+
+[Incoming Webhooks für Slack](https://api.slack.com/incoming-webhooks)
 
 
 ### Sicherheit
