@@ -1,8 +1,8 @@
 <?php
 
-define('TOKEN_FILE', $_SERVER['DOCUMENT_ROOT'] . 'api/token.json');
-define('AUTH_FILE', $_SERVER['DOCUMENT_ROOT'] . 'api/auth.json');
-define('CACHE_FILE', $_SERVER['DOCUMENT_ROOT'] . 'api/cache.json');
+define('TOKEN_FILE', $_SERVER['PATH_TRANSLATED'] . '../api/token.json');
+define('AUTH_FILE', $_SERVER['PATH_TRANSLATED'] . '../api/auth.json');
+define('CACHE_FILE', $_SERVER['PATH_TRANSLATED'] . '../api/cache.json');
 
 define('AUTH_API', 'https://customer.bmwgroup.com/gcdm/oauth/authenticate');
 define('VEHICLE_API', 'https://www.bmw-connecteddrive.de/api/vehicle');

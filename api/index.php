@@ -6,7 +6,7 @@ if ( empty( $_SERVER['HTTP_REFERER'] ) OR strcmp( parse_url( $_SERVER['HTTP_REFE
 }
 
 // Load library
-require_once $_SERVER['DOCUMENT_ROOT'] . '_inc/api.class.php';
+require_once $_SERVER['PATH_TRANSLATED'] . '../_inc/api.class.php';
 
 // Init Battery API
 $api = new Battery_API();

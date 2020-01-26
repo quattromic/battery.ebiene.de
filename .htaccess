@@ -17,8 +17,6 @@ AddDefaultCharset utf-8
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    RewriteCond %{HTTP_HOST} !^battery\.ebiene\.de$ [NC]
-    RewriteRule ^(.*)$ https://battery.ebiene.de/$1 [R=301,L]
 </IfModule>
 
 
